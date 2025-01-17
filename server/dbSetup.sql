@@ -6,3 +6,37 @@ CREATE TABLE IF NOT EXISTS accounts(
   email VARCHAR(255) UNIQUE COMMENT 'User Email',
   picture VARCHAR(255) COMMENT 'User Picture'
 ) default charset utf8mb4 COMMENT '';
+
+
+
+
+CREATE TABLE recipes(
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  title VARCHAR(225) NOT NULL,
+  instructions VARCHAR(5000),
+  img VARCHAR(1000) NOT NULL,
+  category ENUM('breakfast','lunch','dinner','snack','dessert') NOT NULL,
+  creator_id VARCHAR(225) NOT NULL,
+  FOREIGN KEY (creator_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE ingredients(
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  name VARCHAR(255) NOT NULL,
+  quantity VARCHAR(255) NOT NULL,
+  recipe_id INT NOT NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
+)
+
+
+
+
+SELECT
+    ingredients.*
+    FROM ingredients
+    WHERE recipe_id = @recipeId;
