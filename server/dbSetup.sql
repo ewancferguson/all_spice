@@ -40,3 +40,34 @@ SELECT
     ingredients.*
     FROM ingredients
     WHERE recipe_id = @recipeId;
+
+
+
+CREATE TABLE favorites(
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  account_id VARCHAR(225) NOT NULL,
+  recipe_id INT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
+)
+
+
+
+SELECT
+favorites.*,
+recipes.*
+FROM favorites
+JOIN recipes ON recipes.id = favorites.recipe_id
+
+
+
+        SELECT
+        favorites.*,
+        recipes.*,
+        accounts.*
+        FROM favorites
+        JOIN recipes ON favorites.recipe_id = recipes.id
+        JOIN accounts ON accounts.id = recipes.creator_id
+        WHERE favorites.id = 2;
