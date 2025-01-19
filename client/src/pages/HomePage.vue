@@ -1,5 +1,36 @@
 <script setup>
+import { AppState } from '@/AppState';
 import Login from '@/components/Login.vue';
+import RecipeCard from '@/components/RecipeCard.vue';
+import { recipesService } from '@/services/RecipesService';
+import Pop from '@/utils/Pop';
+import { computed, onMounted } from 'vue';
+
+
+
+const recipes = computed(() =>
+  AppState.recipes
+)
+
+
+
+
+onMounted(() => {
+  getRecipes()
+})
+
+
+async function getRecipes() {
+  try {
+    await recipesService.getRecipes()
+  }
+  catch (error) {
+    Pop.error(error);
+  }
+}
+
+
+
 </script>
 
 <template>
@@ -41,6 +72,14 @@ import Login from '@/components/Login.vue';
         </div>
       </div>
     </nav>
+  </div>
+
+  <div class="container">
+    <section class="row justify-content-evenly">
+      <div class="col-md-4 my-4" v-for="recipe in recipes" :key="recipe.id">
+        <RecipeCard :recipe="recipe" />
+      </div>
+    </section>
   </div>
 </template>
 
