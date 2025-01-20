@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState';
+import CreateRecipe from '@/components/CreateRecipe.vue';
 import Login from '@/components/Login.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
 import RecipeModal from '@/components/RecipeModal.vue';
@@ -85,7 +86,10 @@ async function getRecipes() {
     </section>
   </div>
 
+  <button data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-primary fixed-bottom-right">Add
+    Recipe</button>
 
+  <CreateRecipe />
 
 </template>
 
@@ -160,5 +164,12 @@ async function getRecipes() {
 
 .login-btn:hover {
   background-color: #0056b3;
+}
+
+.fixed-bottom-right {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 </style>
