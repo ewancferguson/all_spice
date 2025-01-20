@@ -2,6 +2,7 @@
 import { AppState } from '@/AppState';
 import Login from '@/components/Login.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
+import RecipeModal from '@/components/RecipeModal.vue';
 import { recipesService } from '@/services/RecipesService';
 import Pop from '@/utils/Pop';
 import { computed, onMounted } from 'vue';
@@ -12,7 +13,9 @@ const recipes = computed(() =>
   AppState.recipes
 )
 
-
+const activeRecipe = computed(() =>
+  AppState.activeRecipe
+)
 
 
 onMounted(() => {
@@ -81,6 +84,9 @@ async function getRecipes() {
       </div>
     </section>
   </div>
+
+
+
 </template>
 
 <style scoped>

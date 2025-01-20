@@ -71,3 +71,6 @@ JOIN recipes ON recipes.id = favorites.recipe_id
         JOIN recipes ON favorites.recipe_id = recipes.id
         JOIN accounts ON accounts.id = recipes.creator_id
         WHERE favorites.id = 2;
+
+
+        DELETE FROM recipes

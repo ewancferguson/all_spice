@@ -4,6 +4,13 @@ import { Recipe } from "@/models/Recipe.js"
 import { AppState } from "@/AppState.js"
 
 class RecipesService {
+  async getRecipeById(recipeId) {
+    AppState.activeRecipe = null
+    const response = await api.get(`api/recipes/${recipeId}`)
+    logger.log(response.data)
+    const recipe = new Recipe(response.data)
+    AppState.activeRecipe = recipe
+  }
   async getRecipes() {
     const response = await api.get('api/recipes')
     logger.log(response.data)
