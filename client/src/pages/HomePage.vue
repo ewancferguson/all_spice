@@ -18,6 +18,10 @@ const activeRecipe = computed(() =>
   AppState.activeRecipe
 )
 
+const account = computed(() =>
+  AppState.account
+)
+
 
 onMounted(() => {
   getRecipes()
@@ -57,7 +61,7 @@ async function getRecipes() {
       </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-custom">
+    <nav v-if="account" class="navbar navbar-expand-lg navbar-custom">
       <div class="container position-relative">
         <div class="row justify-content-center w-100 spill-container">
           <div class="col-md-6 spill-over">
@@ -76,21 +80,22 @@ async function getRecipes() {
         </div>
       </div>
     </nav>
+
+    <div class="container">
+      <section class="row justify-content-evenly">
+        <div class="col-md-4 my-4" v-for="recipe in recipes" :key="recipe.id">
+          <RecipeCard :recipe="recipe" />
+        </div>
+      </section>
+    </div>
+
+    <CreateRecipe />
+
+    <button v-if="account" data-bs-toggle="modal" data-bs-target="#createModal"
+      class="btn btn-primary fixed-bottom-right">
+      Create Recipe
+    </button>
   </div>
-
-  <div class="container">
-    <section class="row justify-content-evenly">
-      <div class="col-md-4 my-4" v-for="recipe in recipes" :key="recipe.id">
-        <RecipeCard :recipe="recipe" />
-      </div>
-    </section>
-  </div>
-
-  <button data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-primary fixed-bottom-right">Add
-    Recipe</button>
-
-  <CreateRecipe />
-
 </template>
 
 <style scoped>
@@ -171,5 +176,17 @@ async function getRecipes() {
   bottom: 20px;
   right: 20px;
   z-index: 1000;
+  background-color: #007b5e;
+  color: white;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.fixed-bottom-right:hover {
+  background-color: #00573e;
 }
 </style>
