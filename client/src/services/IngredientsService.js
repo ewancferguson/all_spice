@@ -4,6 +4,12 @@ import { logger } from "@/utils/Logger.js"
 import { Ingredient } from "@/models/Ingredient.js"
 
 class IngredientsService {
+  async deleteIngredient(ingredientId) {
+    const response = await api.delete(`api/ingredients/${ingredientId}`)
+    logger.log(response.data)
+    const ingredientIndex = AppState.ingredients.findIndex(ingredient => ingredient.id == ingredientId)
+    AppState.ingredients.splice(ingredientIndex, 1)
+  }
   async createIngredient(ingredientData) {
     const response = await api.post('api/ingredients', ingredientData)
     logger.log(response.data)

@@ -4,6 +4,12 @@ import { Recipe } from "@/models/Recipe.js"
 import { AppState } from "@/AppState.js"
 
 class RecipesService {
+  async deleteRecipe(recipeId) {
+    const response = await api.delete(`api/recipes/${recipeId}`)
+    logger.log(response.data)
+    const recipeIndex = AppState.recipes.findIndex(recipe => recipe.id == recipeId)
+    AppState.recipes.splice(recipeIndex, 1)
+  }
   async createRecipe(recipeData) {
     AppState.activeRecipe = null
     const response = await api.post('api/recipes', recipeData)
