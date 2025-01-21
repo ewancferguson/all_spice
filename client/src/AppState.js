@@ -12,6 +12,8 @@ export const AppState = reactive({
   /** @type {import('./models/Recipe.js').Recipe} user info from the database*/
   activeRecipe: null,
   /** @type {import('./models/Ingredient.js').Ingredient[]} user info from the database*/
-  ingredients: []
+  ingredients: [],
+  /** @type {import('./models/Favorite.js').FavoriteRecipe[]} user info from the database*/
+  favoriteRecipes: []
 })
 

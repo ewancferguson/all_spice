@@ -4,6 +4,7 @@ import CreateRecipe from '@/components/CreateRecipe.vue';
 import Login from '@/components/Login.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
 import RecipeModal from '@/components/RecipeModal.vue';
+import { accountService } from '@/services/AccountService';
 import { recipesService } from '@/services/RecipesService';
 import Pop from '@/utils/Pop';
 import { computed, onMounted } from 'vue';
@@ -37,7 +38,14 @@ async function getRecipes() {
   }
 }
 
-
+async function getFavoriteRecipes() {
+  try {
+    await accountService.getFavoriteRecipes()
+  }
+  catch (error) {
+    Pop.error(error);
+  }
+}
 
 </script>
 
@@ -72,7 +80,7 @@ async function getRecipes() {
               <li class="nav-item">
                 <a class="nav-link" href="#">My Recipes</a>
               </li>
-              <li class="nav-item">
+              <li @click="getFavoriteRecipes()" class="nav-item">
                 <a class="nav-link" href="#">Favorites</a>
               </li>
             </ul>

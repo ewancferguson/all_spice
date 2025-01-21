@@ -50,10 +50,11 @@ CREATE TABLE favorites(
   account_id VARCHAR(225) NOT NULL,
   recipe_id INT NOT NULL,
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
-  FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
+  FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE,
+  UNIQUE(account_id, recipe_id)
 )
 
-
+DROP TABLE favorites
 
 SELECT
 favorites.*,

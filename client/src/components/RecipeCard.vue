@@ -7,8 +7,9 @@ import { computed } from 'vue';
 import RecipeModal from './RecipeModal.vue';
 import { Modal } from 'bootstrap';
 import { ingredientsService } from '@/services/IngredientsService';
+import { favoritesService } from '@/services/FavoritesService';
 
-defineProps({
+const props = defineProps({
   recipe: { type: Recipe, required: true },
 });
 
@@ -54,6 +55,17 @@ async function deleteRecipe(recipeId) {
 }
 
 
+async function createFavorite() {
+  try {
+    const favoriteData = { recipeId: props.recipe.id }
+    await favoritesService.createFavorite(favoriteData)
+  }
+  catch (error) {
+    Pop.error(error);
+  }
+}
+
+
 </script>
 
 <template>
@@ -69,7 +81,7 @@ async function deleteRecipe(recipeId) {
         </path>
       </svg>
     </button>
-    <button v-else-if="account" class="btn btn-primary position-absolute top-0 end-0 m-2"
+    <button @click="createFavorite()" v-else-if="account" class="btn btn-primary position-absolute top-0 end-0 m-2"
       onclick="event.stopPropagation()">
       Favorite
     </button>
