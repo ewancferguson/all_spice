@@ -7,13 +7,21 @@ import RecipeModal from '@/components/RecipeModal.vue';
 import { accountService } from '@/services/AccountService';
 import { recipesService } from '@/services/RecipesService';
 import Pop from '@/utils/Pop';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 
 
-const recipes = computed(() =>
-  AppState.recipes
+const recipes = computed(() => {
+  if (activeFilterCategory.value == 'home') return AppState.recipes
+  if (activeFilterCategory.value == 'myRecipes') return AppState.recipes.filter(recipe => recipe.creatorId == account.value.id)
+  return AppState.favoriteRecipes
+}
 )
+
+
+
+const activeFilterCategory = ref('home')
+
 
 const activeRecipe = computed(() =>
   AppState.activeRecipe
@@ -74,13 +82,13 @@ async function getFavoriteRecipes() {
         <div class="row justify-content-center w-100 spill-container">
           <div class="col-md-6 spill-over">
             <ul class="navbar-nav d-flex justify-content-center shadow p-2 rounded">
-              <li class="nav-item">
+              <li @click="activeFilterCategory = 'home'" class="nav-item">
                 <a class="nav-link" href="#">Home</a>
               </li>
-              <li class="nav-item">
+              <li @click="activeFilterCategory = 'myRecipes'" class="nav-item">
                 <a class="nav-link" href="#">My Recipes</a>
               </li>
-              <li @click="getFavoriteRecipes()" class="nav-item">
+              <li @click="getFavoriteRecipes(), activeFilterCategory = 'hello'" class="nav-item">
                 <a class="nav-link" href="#">Favorites</a>
               </li>
             </ul>
