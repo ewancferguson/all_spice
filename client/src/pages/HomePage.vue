@@ -40,6 +40,7 @@ onMounted(() => {
 async function getRecipes() {
   try {
     await recipesService.getRecipes()
+
   }
   catch (error) {
     Pop.error(error);
@@ -51,7 +52,8 @@ async function getFavoriteRecipes() {
     await accountService.getFavoriteRecipes()
   }
   catch (error) {
-    Pop.error(error);
+    console.error('NOT LOGGED IN LOG IN TO SEE FAVORITE RECIPES', error);
+
   }
 }
 
@@ -88,7 +90,7 @@ async function getFavoriteRecipes() {
               <li @click="activeFilterCategory = 'myRecipes'" class="nav-item">
                 <a class="nav-link" href="#">My Recipes</a>
               </li>
-              <li @click="getFavoriteRecipes(), activeFilterCategory = 'hello'" class="nav-item">
+              <li @click="activeFilterCategory = 'hello'" class="nav-item">
                 <a class="nav-link" href="#">Favorites</a>
               </li>
             </ul>

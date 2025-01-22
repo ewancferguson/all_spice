@@ -7,7 +7,7 @@ import { api } from './AxiosService.js'
 class AccountService {
   async getFavoriteRecipes() {
     const response = await api.get('account/favorites')
-    logger.log(response.data)
+    logger.log('getting fav recipes', response.data)
     const recipes = response.data.map(recipePOJO => new FavoriteRecipe(recipePOJO))
     AppState.favoriteRecipes = recipes
   }

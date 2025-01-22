@@ -2,11 +2,14 @@
 import { computed } from 'vue';
 import { AppState } from '../AppState.js';
 import { AuthService } from '../services/AuthService.js';
+import { favoritesService } from '@/services/FavoritesService.js';
+import { accountService } from '@/services/AccountService.js';
 
 const identity = computed(() => AppState.identity)
 const account = computed(() => AppState.account)
 async function login() {
   AuthService.loginWithPopup()
+  accountService.getFavoriteRecipes()
 }
 async function logout() {
   AuthService.logout()

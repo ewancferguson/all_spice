@@ -17,6 +17,11 @@ const activeRecipe = computed(() =>
   AppState.activeRecipe
 )
 
+
+
+const hasFavorited = computed(() => AppState.favoriteRecipes.some(favoriteRecipe => favoriteRecipe.id == props.recipe.id))
+
+
 const account = computed(() =>
   AppState.account
 )
@@ -65,6 +70,15 @@ async function createFavorite() {
   }
 }
 
+async function deleteFavorite(favorite) {
+  try {
+    await favoritesService.deleteFavorite(favorite)
+  }
+  catch (error) {
+    Pop.error(error);
+  }
+}
+
 
 </script>
 
@@ -81,10 +95,17 @@ async function createFavorite() {
         </path>
       </svg>
     </button>
-    <button @click="createFavorite()" v-else-if="account" class="btn btn-primary position-absolute top-0 end-0 m-2"
-      onclick="event.stopPropagation()">
-      Favorite
-    </button>
+    <div v-else>
+      <div v-if="account">
+        <button @click="deleteFavorite()" class="btn btn-danger mdi mdi-heart-remove position-absolute top-0 end-0 m-2"
+          onclick="event.stopPropagation()" v-if="hasFavorited"></button>
+        <button v-else @click="createFavorite()" class="btn btn-primary mdi mdi-heart position-absolute top-0 end-0 m-2"
+          onclick="event.stopPropagation()">
+
+        </button>
+      </div>
+
+    </div>
 
     <span v-if="recipe" class="badge glass-card text-capitalize position-absolute top-0 start-0 m-2">
       {{ recipe.category }}
