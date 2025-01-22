@@ -4,6 +4,11 @@ import { Recipe } from "@/models/Recipe.js"
 import { AppState } from "@/AppState.js"
 
 class RecipesService {
+  async updateRecipe(recipeId, instructionData) {
+    const response = await api.put(`api/recipes/${recipeId}`, instructionData)
+    logger.log(response.data)
+    AppState.activeRecipe = new Recipe(response.data)
+  }
   async deleteRecipe(recipeId) {
     const response = await api.delete(`api/recipes/${recipeId}`)
     logger.log(response.data)

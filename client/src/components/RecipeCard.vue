@@ -3,7 +3,7 @@ import { AppState } from '@/AppState';
 import { Recipe } from '@/models/Recipe';
 import { recipesService } from '@/services/RecipesService';
 import Pop from '@/utils/Pop';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import RecipeModal from './RecipeModal.vue';
 import { Modal } from 'bootstrap';
 import { ingredientsService } from '@/services/IngredientsService';
@@ -19,7 +19,7 @@ const activeRecipe = computed(() =>
 
 
 
-const hasFavorited = computed(() => AppState.favoriteRecipes.some(favoriteRecipe => favoriteRecipe.id == props.recipe.id))
+const hasFavorited = computed(() => AppState.favoriteRecipes.find(favoriteRecipe => favoriteRecipe.id == props.recipe.id))
 
 
 const account = computed(() =>
@@ -97,7 +97,8 @@ async function deleteFavorite(favorite) {
     </button>
     <div v-else>
       <div v-if="account">
-        <button @click="deleteFavorite()" class="btn btn-danger mdi mdi-heart-remove position-absolute top-0 end-0 m-2"
+        <button @click="deleteFavorite(hasFavorited.favoriteId)"
+          class="btn btn-danger mdi mdi-heart-remove position-absolute top-0 end-0 m-2"
           onclick="event.stopPropagation()" v-if="hasFavorited"></button>
         <button v-else @click="createFavorite()" class="btn btn-primary mdi mdi-heart position-absolute top-0 end-0 m-2"
           onclick="event.stopPropagation()">
