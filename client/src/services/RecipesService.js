@@ -21,6 +21,7 @@ class RecipesService {
     logger.log('created recipe')
     const recipe = new Recipe(response.data)
     AppState.activeRecipe = recipe
+    AppState.recipes.push(recipe)
   }
   async getRecipeById(recipeId) {
     AppState.activeRecipe = null
