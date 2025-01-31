@@ -28,7 +28,7 @@ COPY server/*.csproj ./
 RUN dotnet restore
 
 COPY server ./
-COPY --from=client-builder /app/client/docs /app/server/wwwroot
+COPY --from=client-builder /app/client/dist /app/server/wwwroot
 
 # Build and publish a release
 RUN dotnet publish -c Release -o out
