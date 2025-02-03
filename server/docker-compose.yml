@@ -6,4 +6,4 @@ services:
     env_file:
       - all_spice-env
     ports:
-      - "7045:80"
+      - "7050:80"
