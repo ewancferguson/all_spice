@@ -63,17 +63,14 @@ async function getFavoriteRecipes() {
   <div>
     <div>
       <div class="position-relative">
-        <img src="https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=2000&auto=format&fit=crop&q=80"
-          alt="Header Image" class="header-image">
+        <img
+          src="https://images.unsplash.com/photo-1547573854-74d2a71d0826?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmFtaWx5JTIwZGlubmVyfGVufDB8fDB8fHww"
+          alt="Header Image" class="header-image img-fluid" />
         <div class="header-content text-center">
           <h1 class="display-4">All Spice</h1>
           <p class="lead">Cherish Your Family<br>And Their Cooking</p>
         </div>
         <div class="header-actions">
-          <form class="d-flex search-bar">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
           <Login />
         </div>
       </div>

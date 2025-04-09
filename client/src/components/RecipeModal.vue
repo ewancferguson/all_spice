@@ -1,159 +1,131 @@
 <script setup>
 import { AppState } from '@/AppState';
-import { Ingredient } from '@/models/Ingredient';
-import { Recipe } from '@/models/Recipe';
 import { ingredientsService } from '@/services/IngredientsService';
 import Pop from '@/utils/Pop';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 
-
-
-const recipe = computed(() =>
-  AppState.activeRecipe
-)
-
-const ingredients = computed(() =>
-  AppState.ingredients
-)
-
-const account = computed(() => AppState.account
-)
+const recipe = computed(() => AppState.activeRecipe);
+const ingredients = computed(() => AppState.ingredients);
+const account = computed(() => AppState.account);
 
 const editableIngredientData = ref({
   name: '',
   quantity: '',
   recipeId: null
-})
+});
 
 async function createIngredient() {
   try {
-    editableIngredientData.value.recipeId = AppState.activeRecipe.id
-    await ingredientsService.createIngredient(editableIngredientData.value)
-    editableIngredientData.value =
-    {
-      name: '',
-      quantity: '',
-      recipeId: null
-    }
-
-  }
-  catch (error) {
+    editableIngredientData.value.recipeId = recipe.value.id;
+    await ingredientsService.createIngredient(editableIngredientData.value);
+    editableIngredientData.value = { name: '', quantity: '', recipeId: null };
+  } catch (error) {
     Pop.error(error);
   }
-
 }
-
 
 async function deleteIngredient(ingredientId) {
   try {
-    await ingredientsService.deleteIngredient(ingredientId)
-  }
-  catch (error) {
+    await ingredientsService.deleteIngredient(ingredientId);
+  } catch (error) {
     Pop.error(error);
   }
 }
 </script>
 
-
 <template>
-
-
   <div v-if="recipe" class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="recipeModalLabel">{{ recipe.title }}</h5>
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold" id="recipeModalLabel">{{ recipe.title }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <img :src="recipe.img" class="img-fluid mb-3" alt="Recipe Image">
-          <h6>Ingredients</h6>
-          <ul class="list-group list-group-flush mb-3">
-            <li v-for="ingredient in ingredients" :key="ingredient.id"
-              class="list-group-item d-flex align-items-center">
-              <button v-if="recipe.creatorId == account?.id" @click="deleteIngredient(ingredient.id)" class="btn">
-                <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
-                  <path transform="translate(-2.5 -1.25)"
-                    d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z"
-                    id="Fill"></path>
-                </svg>
-              </button>
-              {{ ingredient.quantity }} {{ ingredient.name }}
-            </li>
-          </ul>
 
-          <form v-if="recipe.creatorId == account?.id" @submit="createIngredient()">
-            <div class="d-flex mb-3">
-              <div class="flex-grow-1 me-2">
-                <label for="ingredientName" class="form-label">Ingredient Name</label>
-                <input v-model="editableIngredientData.name" type="text" id="ingredientName" class="form-control"
-                  required>
-              </div>
-              <div class="flex-grow-1 me-2">
-                <label for="ingredientQuantity" class="form-label">Quantity</label>
-                <input v-model="editableIngredientData.quantity" type="text" id="ingredientQuantity"
-                  class="form-control" required>
-              </div>
-              <button type="submit" class="btn btn-primary d-flex align-items-center">
-                <span class="me-2">Add</span><i class="bi bi-plus-circle"></i>
-              </button>
+        <div class="modal-body">
+          <div class="row g-4 flex-column flex-md-row">
+            <!-- Left: Image -->
+            <div class="col-12 col-md-5">
+              <img :src="recipe.img" alt="Recipe Image" class="img-fluid w-100 recipe-img rounded shadow-sm" />
             </div>
-          </form>
-          <h6>Instructions</h6>
-          <p>{{ recipe.instructions }}</p>
+
+            <!-- Right: Content -->
+            <div class="col-12 col-md-7">
+              <h6 class="fw-semibold mb-3">Ingredients</h6>
+              <ul class="list-group list-group-flush mb-4">
+                <li v-for="ingredient in ingredients" :key="ingredient.id"
+                  class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>{{ ingredient.quantity }} {{ ingredient.name }}</span>
+                  <button v-if="recipe.creatorId == account?.id" @click="deleteIngredient(ingredient.id)"
+                    class="btn btn-sm btn-outline-danger d-flex align-items-center" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Ingredient Form -->
+              <form v-if="recipe.creatorId == account?.id" @submit.prevent="createIngredient" class="mb-4">
+                <div class="row g-2">
+                  <div class="col-12 col-md-5">
+                    <label for="ingredientName" class="form-label">Name</label>
+                    <input v-model="editableIngredientData.name" type="text" id="ingredientName" class="form-control"
+                      required />
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <label for="ingredientQuantity" class="form-label">Quantity</label>
+                    <input v-model="editableIngredientData.quantity" type="text" id="ingredientQuantity"
+                      class="form-control" required />
+                  </div>
+                  <div class="col-12 col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                      <i class="bi bi-plus-circle me-1"></i> Add
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              <h6 class="fw-semibold">Instructions</h6>
+              <p class="text-muted">{{ recipe.instructions }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-
-
 </template>
 
-
-<style lang="scss" scoped>
-.btn {
-  background-color: transparent;
-  position: relative;
-  border: none;
+<style scoped lang="scss">
+.recipe-img {
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 0.75rem;
 }
 
-.btn::after {
-  position: absolute;
-  top: -130%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: fit-content;
-  height: fit-content;
-  background-color: rgb(168, 7, 7);
-  padding: 4px 8px;
-  border-radius: 5px;
-  transition: .2s linear;
-  transition-delay: .2s;
-  color: white;
-  text-transform: uppercase;
-  font-size: 12px;
-  opacity: 0;
-  visibility: hidden;
+@media (max-width: 768px) {
+  .recipe-img {
+    max-height: 300px;
+    border-radius: 0.5rem;
+  }
 }
 
-.icon {
-  transform: scale(1.2);
-  transition: .2s linear;
+.modal-content {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.btn:hover>.icon {
-  transform: scale(1.5);
+.modal-title {
+  font-size: 1.75rem;
 }
 
-.btn:hover>.icon path {
-  fill: rgb(168, 7, 7);
+.list-group-item {
+  font-size: 1rem;
+  background-color: #fff;
+  transition: background-color 0.2s;
 }
 
-.btn:hover::after {
-  visibility: visible;
-  opacity: 1;
-  top: -160%;
+.list-group-item:hover {
+  background-color: #f8f9fa;
 }
 </style>

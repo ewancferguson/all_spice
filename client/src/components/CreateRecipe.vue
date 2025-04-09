@@ -4,6 +4,7 @@ import Pop from '@/utils/Pop';
 import { ref } from 'vue';
 import RecipeModal from './RecipeModal.vue';
 import { Modal } from 'bootstrap';
+import { AppState } from '@/AppState';
 
 
 
@@ -28,6 +29,7 @@ async function createRecipe() {
     }
     Pop.success("Recipe Created")
     Modal.getInstance('#createModal').hide()
+    AppState.ingredients = []
     Modal.getOrCreateInstance('#recipeModal').show()
   }
   catch (error) {

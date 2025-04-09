@@ -23,6 +23,10 @@ CREATE TABLE recipes(
 );
 
 
+DROP TABLE recipes;
+DROP TABLE ingredients;
+DROP TABLE favorites;
+
 CREATE TABLE ingredients(
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -75,3 +79,6 @@ JOIN recipes ON recipes.id = favorites.recipe_id
 
 
         DELETE FROM recipes
+
+
+  
