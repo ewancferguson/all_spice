@@ -11,31 +11,11 @@ All Spice is a fullstack web application designed for users to create, share, an
 
 ## 🏗️ Tech Stack
 - **Backend:** .NET Core, MySQL
-- **Frontend:** Vue.js (Planned Future Enhancement)
-- **Authentication:** JWT-based authentication
-- **ORM:** Entity Framework Core
+- **Frontend:** Vue.js
+- **Authentication:** Auth0
 - **Database:** MySQL
 
-## 🔧 Setup & Installation
-1. **Clone the repository**
-   ```sh
-   git clone https://github.com/ewancferguson/all_spice.git
-   cd all_spice
-   ```
-2. **Set up the database**
-   - Ensure MySQL is installed and running.
-   - Create a new database named `allspice_db`.
-   - Run migrations using Entity Framework:
-     ```sh
-     dotnet ef database update
-     ```
-3. **Configure environment variables**
-   - Create an `appsettings.json` file and add your database connection string.
 
-4. **Run the application**
-   ```sh
-   dotnet run
-   ```
 
 ## 📜 API Endpoints
 | Method | Endpoint            | Description                |
